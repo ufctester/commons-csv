@@ -43,6 +43,9 @@
 Apache Commons CSV
 ===================
 
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.apache.commons/commons-csv/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.apache.commons/commons-csv/)
+[![License](http://img.shields.io/:license-apache-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
+
 The Apache Commons CSV library provides a simple interface for reading and writing
 CSV files of various types.
 
@@ -63,7 +66,7 @@ Alternatively you can pull it from the central Maven repositories:
 <dependency>
   <groupId>org.apache.commons</groupId>
   <artifactId>commons-csv</artifactId>
-  <version>1.1</version>
+  <version>1.2</version>
 </dependency>
 ```
 

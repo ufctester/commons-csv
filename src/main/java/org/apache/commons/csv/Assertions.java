@@ -18,9 +18,11 @@
 package org.apache.commons.csv;
 
 /**
- * Utility class for input parameter validation
+ * Utility class for input parameter validation.
  *
- * @version $Id: Assertions.java 1559908 2014-01-21 02:44:30Z ggregory $
+ * TODO Replace usage with {@link Objects} when we switch to Java 7.
+ *
+ * @version $Id: Assertions.java 1742459 2016-05-05 19:43:57Z britter $
  */
 final class Assertions {
 

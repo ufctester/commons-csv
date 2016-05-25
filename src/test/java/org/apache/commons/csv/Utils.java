@@ -25,7 +25,7 @@ import org.junit.Assert;
 /**
  * Utility methods for test cases
  *
- * @version $Id: Utils.java 1512617 2013-08-10 10:46:03Z britter $
+ * @version $Id: Utils.java 1725356 2016-01-18 21:37:46Z ggregory $
  */
 final class Utils {
 
@@ -41,8 +41,8 @@ final class Utils {
      */
     public static void compare(final String message, final String[][] expected, final List<CSVRecord> actual) {
         Assert.assertEquals(message+"  - outer array size", expected.length, actual.size());
-        for(int i = 0; i < expected.length; i++) {
-            Assert.assertArrayEquals(message+" (entry "+i+")",expected[i], actual.get(i).values());
+        for (int i = 0; i < expected.length; i++) {
+            Assert.assertArrayEquals(message + " (entry " + i + ")", expected[i], actual.get(i).values());
         }
     }
 }

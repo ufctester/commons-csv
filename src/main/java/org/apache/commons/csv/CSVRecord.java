@@ -28,7 +28,7 @@ import java.util.Map.Entry;
 /**
  * A CSV record parsed from a CSV file.
  *
- * @version $Id: CSVRecord.java 1695167 2015-08-10 21:08:58Z ggregory $
+ * @version $Id: CSVRecord.java 1727809 2016-01-31 13:08:33Z sebb $
  */
 public final class CSVRecord implements Serializable, Iterable<String> {
 
@@ -125,6 +125,9 @@ public final class CSVRecord implements Serializable, Iterable<String> {
 
     /**
      * Returns the comment for this record, if any.
+     * Note that comments are attached to the following record.
+     * If there is no following record (i.e. the comment is at EOF)
+     * the comment will be ignored.
      *
      * @return the comment for this record, or null if no comment for this record is available.
      */
@@ -159,6 +162,19 @@ public final class CSVRecord implements Serializable, Iterable<String> {
      */
     public boolean isConsistent() {
         return mapping == null || mapping.size() == values.length;
+    }
+
+    /**
+     * Checks whether this record has a comment, false otherwise.
+     * Note that comments are attached to the following record.
+     * If there is no following record (i.e. the comment is at EOF)
+     * the comment will be ignored.
+     *
+     * @return true if this record has a comment, false otherwise
+     * @since 1.3
+     */
+    public boolean hasComment() {
+        return comment != null;
     }
 
     /**

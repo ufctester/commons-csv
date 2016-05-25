@@ -31,7 +31,7 @@ import java.sql.SQLException;
 /**
  * Prints values in a CSV format.
  *
- * @version $Id: CSVPrinter.java 1695167 2015-08-10 21:08:58Z ggregory $
+ * @version $Id: CSVPrinter.java 1742467 2016-05-05 20:00:16Z britter $
  */
 public final class CSVPrinter implements Flushable, Closeable {
 
@@ -73,7 +73,7 @@ public final class CSVPrinter implements Flushable, Closeable {
                 }
             }
         }
-        if (format.getHeader() != null) {
+        if (format.getHeader() != null && !format.getSkipHeaderRecord()) {
             this.printRecord((Object[]) format.getHeader());
         }
     }
@@ -128,6 +128,7 @@ public final class CSVPrinter implements Flushable, Closeable {
         } else {
             strValue = value.toString();
         }
+        strValue = format.getTrim() ? strValue.trim() : strValue;
         this.print(value, strValue, 0, strValue.length());
     }
 
@@ -136,7 +137,9 @@ public final class CSVPrinter implements Flushable, Closeable {
         if (!newRecord) {
             out.append(format.getDelimiter());
         }
-        if (format.isQuoteCharacterSet()) {
+        if (object == null) {
+            out.append(value);
+        } else if (format.isQuoteCharacterSet()) {
             // the original object is needed so can check for Number
             printAndQuote(object, value, offset, len);
         } else if (format.isEscapeCharacterSet()) {
@@ -228,7 +231,7 @@ public final class CSVPrinter implements Flushable, Closeable {
                 char c = value.charAt(pos);
 
                 // TODO where did this rule come from?
-                if (newRecord && (c < '0' || (c > '9' && c < 'A') || (c > 'Z' && c < 'a') || (c > 'z'))) {
+                if (newRecord && (c < '0' || c > '9' && c < 'A' || c > 'Z' && c < 'a' || c > 'z')) {
                     quote = true;
                 } else if (c <= COMMENT) {
                     // Some other chars at the start of a value caused the parser to fail, so for now
@@ -349,6 +352,9 @@ public final class CSVPrinter implements Flushable, Closeable {
      *             If an I/O error occurs
      */
     public void println() throws IOException {
+        if (format.getTrailingDelimiter()) {
+            out.append(format.getDelimiter());
+        }
         final String recordSeparator = format.getRecordSeparator();
         if (recordSeparator != null) {
             out.append(recordSeparator);

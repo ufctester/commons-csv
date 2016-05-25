@@ -34,12 +34,13 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Arrays;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
  *
  *
- * @version $Id: CSVFormatTest.java 1621004 2014-08-28 00:28:02Z ggregory $
+ * @version $Id: CSVFormatTest.java 1742178 2016-05-03 18:54:13Z britter $
  */
 public class CSVFormatTest {
 
@@ -368,10 +369,18 @@ public class CSVFormatTest {
         final CSVFormat formatWithHeader = CSVFormat.DEFAULT.withHeader(header);
         assertArrayEquals(header, formatWithHeader.getHeader());
         assertNotSame(header, formatWithHeader.getHeader());
-        header[0] = "A";
-        header[1] = "B";
-        header[2] = "C";
-        assertFalse(Arrays.equals(formatWithHeader.getHeader(), header));
+    }
+
+    @Test
+    public void testWithHeaderEnum() throws Exception {
+        final CSVFormat formatWithHeader = CSVFormat.DEFAULT.withHeader(Header.class);
+        assertArrayEquals(new String[]{ "Name", "Email", "Phone" }, formatWithHeader.getHeader());
+    }
+
+    @Test
+    public void testWithEmptyEnum() throws Exception {
+        final CSVFormat formatWithHeader = CSVFormat.DEFAULT.withHeader(EmptyEnum.class);
+        Assert.assertTrue(formatWithHeader.getHeader().length == 0);
     }
 
     @Test
@@ -425,5 +434,19 @@ public class CSVFormatTest {
     public void testWithRecordSeparatorCRLF() throws Exception {
         final CSVFormat formatWithRecordSeparator = CSVFormat.DEFAULT.withRecordSeparator(CRLF);
         assertEquals(CRLF, formatWithRecordSeparator.getRecordSeparator());
+    }
+
+    @Test
+    public void testWithFirstRecordAsHeader() throws Exception {
+        final CSVFormat formatWithFirstRecordAsHeader = CSVFormat.DEFAULT.withFirstRecordAsHeader();
+        assertTrue(formatWithFirstRecordAsHeader.getSkipHeaderRecord());
+        assertTrue(formatWithFirstRecordAsHeader.getHeader().length == 0);
+    }
+
+    public enum Header {
+        Name, Email, Phone
+    }
+
+    public enum EmptyEnum {
     }
 }

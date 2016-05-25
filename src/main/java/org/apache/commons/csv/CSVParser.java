@@ -33,6 +33,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.TreeMap;
 
 import static org.apache.commons.csv.Token.Type.*;
 
@@ -125,7 +126,7 @@ import static org.apache.commons.csv.Token.Type.*;
  * Internal parser state is completely covered by the format and the reader-state.
  * </p>
  *
- * @version $Id: CSVParser.java 1695167 2015-08-10 21:08:58Z ggregory $
+ * @version $Id: CSVParser.java 1742466 2016-05-05 19:55:37Z britter $
  *
  * @see <a href="package-summary.html">package documentation for more details</a>
  */
@@ -285,14 +286,14 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
         this.recordNumber = recordNumber - 1;
     }
 
-    private void addRecordValue() {
+    private void addRecordValue(boolean lastRecord) {
         final String input = this.reusableToken.content.toString();
-        final String nullString = this.format.getNullString();
-        if (nullString == null) {
-            this.record.add(input);
-        } else {
-            this.record.add(input.equalsIgnoreCase(nullString) ? null : input);
+        final String inputClean = this.format.getTrim() ? input.trim() : input;
+        if (lastRecord && inputClean.isEmpty() && this.format.getTrailingDelimiter()) {
+            return;
         }
+        final String nullString = this.format.getNullString();
+        this.record.add(inputClean.equals(nullString) ? null : inputClean);
     }
 
     /**
@@ -378,7 +379,9 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
         Map<String, Integer> hdrMap = null;
         final String[] formatHeader = this.format.getHeader();
         if (formatHeader != null) {
-            hdrMap = new LinkedHashMap<String, Integer>();
+            hdrMap = this.format.getIgnoreHeaderCase() ?
+                    new TreeMap<String, Integer>(String.CASE_INSENSITIVE_ORDER) :
+                    new LinkedHashMap<String, Integer>();
 
             String[] headerRecord = null;
             if (formatHeader.length == 0) {
@@ -400,8 +403,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
                     final String header = headerRecord[i];
                     final boolean containsHeader = hdrMap.containsKey(header);
                     final boolean emptyHeader = header == null || header.trim().isEmpty();
-                    if (containsHeader &&
-                            (!emptyHeader || (emptyHeader && !this.format.getAllowMissingColumnNames()))) {
+                    if (containsHeader && (!emptyHeader || !this.format.getAllowMissingColumnNames())) {
                         throw new IllegalArgumentException("The header contains a duplicate name: \"" + header +
                                 "\" in " + Arrays.toString(headerRecord));
                     }
@@ -498,14 +500,14 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
             this.lexer.nextToken(this.reusableToken);
             switch (this.reusableToken.type) {
             case TOKEN:
-                this.addRecordValue();
+                this.addRecordValue(false);
                 break;
             case EORECORD:
-                this.addRecordValue();
+                this.addRecordValue(true);
                 break;
             case EOF:
                 if (this.reusableToken.isReady) {
-                    this.addRecordValue();
+                    this.addRecordValue(true);
                 }
                 break;
             case INVALID:

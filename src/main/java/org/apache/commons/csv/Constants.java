@@ -20,11 +20,14 @@ package org.apache.commons.csv;
 /**
  * Constants for this package.
  *
- * @version $Id: Constants.java 1582822 2014-03-28 16:52:17Z sebb $
+ * @version $Id: Constants.java 1742459 2016-05-05 19:43:57Z britter $
  */
 final class Constants {
 
+    static final char BACKSLASH = '\\';
+
     static final char BACKSPACE = '\b';
+
     static final char COMMA = ',';
 
     /**
@@ -33,29 +36,20 @@ final class Constants {
     static final char COMMENT = '#';
 
     static final char CR = '\r';
+
+    /** RFC 4180 defines line breaks as CRLF */
+    static final String CRLF = "\r\n";
+
     static final Character DOUBLE_QUOTE_CHAR = Character.valueOf('"');
-    static final char BACKSLASH = '\\';
-    static final char FF = '\f';
-    static final char LF = '\n';
-    static final char SP = ' ';
-    static final char TAB = '\t';
-
-    /** ASCII record separator */
-    static final char RS = 30;
-
-    /** ASCII unit separator */
-    static final char US = 31;
 
     static final String EMPTY = "";
 
     /** The end of stream symbol */
     static final int END_OF_STREAM = -1;
 
-    /** Undefined state for the lookahead char */
-    static final int UNDEFINED = -2;
+    static final char FF = '\f';
 
-    /** According to RFC 4180, line breaks are delimited by CRLF */
-    static final String CRLF = "\r\n";
+    static final char LF = '\n';
 
     /**
      * Unicode line separator.
@@ -63,13 +57,28 @@ final class Constants {
     static final String LINE_SEPARATOR = "\u2028";
 
     /**
+     * Unicode next line.
+     */
+    static final String NEXT_LINE = "\u0085";
+
+    /**
      * Unicode paragraph separator.
      */
     static final String PARAGRAPH_SEPARATOR = "\u2029";
 
-    /**
-     * Unicode next line.
-     */
-    static final String NEXT_LINE = "\u0085";
+    static final char PIPE = '|';
+
+    /** ASCII record separator */
+    static final char RS = 30;
+
+    static final char SP = ' ';
+
+    static final char TAB = '\t';
+
+    /** Undefined state for the lookahead char */
+    static final int UNDEFINED = -2;
+
+    /** ASCII unit separator */
+    static final char US = 31;
 
 }

@@ -33,7 +33,7 @@ import java.io.Reader;
  * {@link #read()}. This reader also tracks how many characters have been read with {@link #getPosition()}.
  * </p>
  *
- * @version $Id: ExtendedBufferedReader.java 1635146 2014-10-29 14:31:07Z ggregory $
+ * @version $Id: ExtendedBufferedReader.java 1742468 2016-05-05 20:02:35Z britter $
  */
 final class ExtendedBufferedReader extends BufferedReader {
 
@@ -58,7 +58,7 @@ final class ExtendedBufferedReader extends BufferedReader {
     @Override
     public int read() throws IOException {
         final int current = super.read();
-        if (current == CR || (current == LF && lastChar != CR)) {
+        if (current == CR || current == LF && lastChar != CR) {
             eolCounter++;
         }
         lastChar = current;

@@ -43,7 +43,7 @@ import org.junit.runners.Parameterized.Parameters;
 /**
  * Parse tests using test files
  *
- * @version $Id: CSVFileParserTest.java 1624048 2014-09-10 16:05:45Z brentworden $
+ * @version $Id: CSVFileParserTest.java 1725345 2016-01-18 20:54:16Z ggregory $
  */
 @RunWith(Parameterized.class)
 public class CSVFileParserTest {
@@ -79,10 +79,10 @@ public class CSVFileParserTest {
             }
         };
         final File[] files = BASE.listFiles(filenameFilter);
-        for (final File f : files) {
-            list.add(new Object[] {
-                f
-            });
+        if (files != null) {
+            for (final File f : files) {
+                list.add(new Object[] { f });
+            }
         }
         return list;
     }

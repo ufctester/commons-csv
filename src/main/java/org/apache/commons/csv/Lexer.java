@@ -36,7 +36,7 @@ import java.io.IOException;
 /**
  * Lexical analyzer.
  *
- * @version $Id: Lexer.java 1635502 2014-10-30 14:01:43Z ggregory $
+ * @version $Id: Lexer.java 1742468 2016-05-05 20:02:35Z britter $
  */
 final class Lexer implements Closeable {
 
@@ -110,7 +110,7 @@ final class Lexer implements Closeable {
         }
 
         // did we reach eof during the last iteration already ? EOF
-        if (isEndOfFile(lastChar) || (!isDelimiter(lastChar) && isEndOfFile(c))) {
+        if (isEndOfFile(lastChar) || !isDelimiter(lastChar) && isEndOfFile(c)) {
             token.type = EOF;
             // don't set token.isReady here because no content
             return token;
@@ -198,7 +198,7 @@ final class Lexer implements Closeable {
                 break;
             } else if (isEscape(ch)) {
                 final int unescaped = readEscape();
-                if (unescaped == Constants.END_OF_STREAM) { // unexpected char after escape
+                if (unescaped == END_OF_STREAM) { // unexpected char after escape
                     token.content.append((char) ch).append((char) reader.getLastChar());
                 } else {
                     token.content.append((char) unescaped);
@@ -246,7 +246,7 @@ final class Lexer implements Closeable {
 
             if (isEscape(c)) {
                 final int unescaped = readEscape();
-                if (unescaped == Constants.END_OF_STREAM) { // unexpected char after escape
+                if (unescaped == END_OF_STREAM) { // unexpected char after escape
                     token.content.append((char) c).append((char) reader.getLastChar());
                 } else {
                     token.content.append((char) unescaped);
