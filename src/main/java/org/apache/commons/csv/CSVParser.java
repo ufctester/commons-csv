@@ -126,7 +126,7 @@ import static org.apache.commons.csv.Token.Type.*;
  * Internal parser state is completely covered by the format and the reader-state.
  * </p>
  *
- * @version $Id: CSVParser.java 1742466 2016-05-05 19:55:37Z britter $
+ * @version $Id: CSVParser.java 1743529 2016-05-12 17:02:05Z ggregory $
  *
  * @see <a href="package-summary.html">package documentation for more details</a>
  */
@@ -286,7 +286,7 @@ public final class CSVParser implements Iterable<CSVRecord>, Closeable {
         this.recordNumber = recordNumber - 1;
     }
 
-    private void addRecordValue(boolean lastRecord) {
+    private void addRecordValue(final boolean lastRecord) {
         final String input = this.reusableToken.content.toString();
         final String inputClean = this.format.getTrim() ? input.trim() : input;
         if (lastRecord && inputClean.isEmpty() && this.format.getTrailingDelimiter()) {

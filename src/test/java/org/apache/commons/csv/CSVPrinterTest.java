@@ -44,7 +44,7 @@ import org.junit.Test;
 /**
  *
  *
- * @version $Id: CSVPrinterTest.java 1739694 2016-04-18 06:16:51Z ggregory $
+ * @version $Id: CSVPrinterTest.java 1743528 2016-05-12 16:59:59Z ggregory $
  */
 public class CSVPrinterTest {
 
@@ -668,7 +668,7 @@ public class CSVPrinterTest {
     }
 
     @Test
-    public void testMySqlNullStringDefault() throws IOException {
+    public void testMySqlNullStringDefault() {
         assertEquals("\\N", CSVFormat.MYSQL.getNullString());
     }
 
